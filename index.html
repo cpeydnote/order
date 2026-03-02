@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海苔訂單表單 - 三味屋x苔嗑</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', 'Noto Sans TC', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 90vh;
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            background: white;
+            color: #333;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 2px solid #e8e8e8;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        /* 左側 - 訂單列表 */
+        .left-panel {
+            background: #fafafa;
+            border-right: 2px solid #e8e8e8;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .left-header {
+            padding: 20px;
+            border-bottom: 2px solid #e8e8e8;
+            font-weight: 600;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .orders-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .order-item {
+            background: white;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .order-item:hover {
+            border-color: #333;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-info {
+            flex: 1;
+        }
+
+        .order-name {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .order-items {
+            font-size: 0.85em;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .order-items-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .order-time {
+            font-size: 0.75em;
+            color: #999;
+            margin-top: 6px;
+        }
+
+        .delete-btn {
+            background: #e8e8e8;
+            border: none;
+            color: #666;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+
+        .delete-btn:hover {
+            background: #ff4444;
+            color: white;
+        }
+
+        .empty-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #999;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.95em;
+        }
+
+        .stats-section {
+            padding: 15px 20px;
+            background: white;
+            border-top: 2px solid #e8e8e8;
+            font-size: 0.9em;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            color: #666;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* 右側 - 表單 */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .form-content {
+            padding: 30px;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #333;
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #333;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .product-item {
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 12px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .product-item:hover {
+            border-color: #333;
+            background: #f8f8f8;
+        }
+
+        .product-name {
+            font-weight: 500;
+            font-size: 0.95em;
+            color: #333;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quantity-control input {
+            width: 60px;
+            padding: 6px;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        .quantity-control span {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-submit {
+            background: #333;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-reset {
+            background: #e8e8e8;
+            color: #333;
+        }
+
+        .btn-reset:hover {
+            background: #d8d8d8;
+        }
+
+        .btn-export {
+            background: #d4d4d4;
+            color: #1b5e20;
+            grid-column: 1 / -1;
+            margin-top: 15px;
+        }
+
+        .btn-export:hover {
+            background: #c0c0c0;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .left-panel {
+                border-right: none;
+                border-bottom: 2px solid #e8e8e8;
+                min-height: 300px;
+                max-height: 400px;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .form-content {
+                padding: 15px;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .quantity-control {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        /* 滾動條美化 */
+        .orders-list::-webkit-scrollbar,
+        .right-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .orders-list::-webkit-scrollbar-track,
+        .right-panel::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+
+        .orders-list::-webkit-scrollbar-thumb,
+        .right-panel::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+
+        .orders-list::-webkit-scrollbar-thumb:hover,
+        .right-panel::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>海苔訂單表單</h1>
+            <p>三味屋 × 苔嗑 | 一帖咖啡</p>
+        </div>
+
+        <!-- 左側 - 訂單列表 -->
+        <div class="left-panel">
+            <div class="left-header">訂單列表</div>
+            
+            <div class="orders-list" id="ordersList">
+                <div class="empty-message">暫無訂單<br>提交後會顯示在這裡</div>
+            </div>
+
+            <div class="stats-section">
+                <div class="stat-row">
+                    <span>總訂單數：</span>
+                    <span class="stat-value" id="totalOrders">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>總盒數：</span>
+                    <span class="stat-value" id="totalBoxes">0</span>
+                </div>
+                <div class="stat-row" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e8e8e8;">
+                    <span>品項數：</span>
+                    <span class="stat-value" id="totalItems">0</span>
+                </div>
+                <button class="btn-export" onclick="exportToExcel()">導出 Excel</button>
+            </div>
+        </div>
+
+        <!-- 右側 - 表單 -->
+        <div class="right-panel">
+            <div class="form-content">
+                <form id="orderForm">
+                    <!-- 訂購者資訊 -->
+                    <div>
+                        <h2 class="section-title">訂購者</h2>
+                        <div class="form-group">
+                            <label for="customerName">姓名 *</label>
+                            <input type="text" id="customerName" name="customerName" required>
+                        </div>
+                    </div>
+
+                    <!-- 訂購品項 -->
+                    <div style="margin-top: 30px;">
+                        <h2 class="section-title">雅系列</h2>
+                        <div class="product-grid">
+                            <div class="product-item">
+                                <div class="product-name">雅系列-原味</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="雅系列-原味" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">雅系列-芥末</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="雅系列-芥末" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">雅系列-辣味</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="雅系列-辣味" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <h2 class="section-title">苔嗑系列</h2>
+                        <div class="product-grid">
+                            <div class="product-item">
+                                <div class="product-name">苔嗑系列-香辣</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="苔嗑系列-香辣" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">苔嗑系列-香椿</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="苔嗑系列-香椿" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">苔嗑系列-鹹香</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="苔嗑系列-鹹香" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <h2 class="section-title">KITTY系列</h2>
+                        <div class="product-grid">
+                            <div class="product-item">
+                                <div class="product-name">KITTY系列-原味</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="KITTY系列-原味" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">KITTY系列-蜂蜜</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="KITTY系列-蜂蜜" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">KITTY系列-起司</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="KITTY系列-起司" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <h2 class="section-title">三味屋系列</h2>
+                        <div class="product-grid">
+                            <div class="product-item">
+                                <div class="product-name">三味屋系列-經典</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="三味屋系列-經典" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">三味屋系列-柚子</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="三味屋系列-柚子" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">三味屋系列-黑芝麻</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="三味屋系列-黑芝麻" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <h2 class="section-title">嗑海苔系列</h2>
+                        <div class="product-grid">
+                            <div class="product-item">
+                                <div class="product-name">嗑海苔系列-涮嘴</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="嗑海苔系列-涮嘴" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">嗑海苔系列-海鮮</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="嗑海苔系列-海鮮" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-name">嗑海苔系列-BBQ</div>
+                                <div class="quantity-control">
+                                    <input type="number" class="product-qty" data-product="嗑海苔系列-BBQ" min="0" value="0">
+                                    <span>盒</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 按鈕 -->
+                    <div class="button-group">
+                        <button type="reset" class="btn-reset">清空</button>
+                        <button type="submit" class="btn-submit">提交訂單</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('orderForm');
+        const ordersList = document.getElementById('ordersList');
+        const productInputs = document.querySelectorAll('.product-qty');
+        
+        let orders = [];
+
+        // 從 localStorage 載入訂單
+        function loadOrders() {
+            const saved = localStorage.getItem('seaweed_orders');
+            if (saved) {
+                orders = JSON.parse(saved);
+                renderOrders();
+                updateStats();
+            }
+        }
+
+        // 保存訂單到 localStorage
+        function saveOrders() {
+            localStorage.setItem('seaweed_orders', JSON.stringify(orders));
+        }
+
+        // 表單提交
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const customerName = document.getElementById('customerName').value;
+            const hasItems = Array.from(productInputs).some(input => parseInt(input.value) > 0);
+
+            if (!hasItems) {
+                alert('請至少選擇一件商品！');
+                return;
+            }
+
+            // 構建訂單
+            const items = [];
+            productInputs.forEach(input => {
+                const qty = parseInt(input.value) || 0;
+                if (qty > 0) {
+                    items.push({
+                        product: input.dataset.product,
+                        quantity: qty
+                    });
+                }
+            });
+
+            const order = {
+                id: Date.now(),
+                name: customerName,
+                items: items,
+                time: new Date().toLocaleString('zh-TW'),
+                timestamp: Date.now()
+            };
+
+            orders.push(order);
+            saveOrders();
+            renderOrders();
+            updateStats();
+
+            // 重置表單
+            form.reset();
+            alert('✅ 訂單已提交！');
+        });
+
+        // 渲染訂單列表
+        function renderOrders() {
+            if (orders.length === 0) {
+                ordersList.innerHTML = '<div class="empty-message">暫無訂單<br>提交後會顯示在這裡</div>';
+                return;
+            }
+
+            ordersList.innerHTML = orders.map((order, index) => {
+                const itemsHtml = order.items.map(item => 
+                    `<div>${item.product} × ${item.quantity} 盒</div>`
+                ).join('');
+
+                return `
+                    <div class="order-item">
+                        <div class="order-info">
+                            <div class="order-name">${order.name}</div>
+                            <div class="order-items">
+                                <div class="order-items-detail">${itemsHtml}</div>
+                            </div>
+                            <div class="order-time">${order.time}</div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteOrder(${order.id})" title="刪除">✕</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 刪除訂單
+        function deleteOrder(id) {
+            if (confirm('確認刪除此訂單？')) {
+                orders = orders.filter(order => order.id !== id);
+                saveOrders();
+                renderOrders();
+                updateStats();
+            }
+        }
+
+        // 更新統計
+        function updateStats() {
+            const totalOrders = orders.length;
+            const totalBoxes = orders.reduce((sum, order) => 
+                sum + order.items.reduce((itemSum, item) => itemSum + item.quantity, 0), 0
+            );
+
+            // 統計各品項
+            const itemStats = {};
+            orders.forEach(order => {
+                order.items.forEach(item => {
+                    itemStats[item.product] = (itemStats[item.product] || 0) + item.quantity;
+                });
+            });
+            const totalItems = Object.keys(itemStats).length;
+
+            document.getElementById('totalOrders').textContent = totalOrders;
+            document.getElementById('totalBoxes').textContent = totalBoxes;
+            document.getElementById('totalItems').textContent = totalItems;
+        }
+
+        // 導出 Excel
+        function exportToExcel() {
+            if (orders.length === 0) {
+                alert('沒有訂單可導出');
+                return;
+            }
+
+            let csvContent = '訂購者,品項,數量,訂單時間\n';
+
+            orders.forEach(order => {
+                order.items.forEach(item => {
+                    csvContent += `"${order.name}","${item.product}",${item.quantity},"${order.time}"\n`;
+                });
+            });
+
+            // 建立下載
+            const link = document.createElement('a');
+            link.href = 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(csvContent);
+            link.download = `海苔訂單_${new Date().toLocaleDateString('zh-TW').replace(/\//g, '-')}.csv`;
+            link.click();
+
+            alert('✅ 訂單已導出為 CSV 檔案！');
+        }
+
+        // 初始化
+        loadOrders();
+    </script>
+</body>
+</html>
