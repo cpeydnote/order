@@ -65,9 +65,6 @@
             border-bottom: 2px solid #e8e8e8;
             font-weight: 600;
             font-size: 1.1em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .orders-list {
@@ -267,7 +264,7 @@
 
         .product-name {
             font-weight: 500;
-            font-size: 0.95em;
+            font-size: 0.9em;
             color: #333;
         }
 
@@ -339,61 +336,21 @@
             background: #c0c0c0;
         }
 
-        /* 響應式設計 */
         @media (max-width: 1024px) {
             .container {
                 grid-template-columns: 1fr;
             }
-
             .left-panel {
                 border-right: none;
                 border-bottom: 2px solid #e8e8e8;
                 min-height: 300px;
                 max-height: 400px;
             }
-
-            .product-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
         }
 
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.5em;
-            }
-
-            .form-content {
-                padding: 15px;
-            }
-
-            .product-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .product-item {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-
-            .quantity-control {
-                width: 100%;
-                justify-content: space-between;
-            }
-        }
-
-        /* 滾動條美化 */
         .orders-list::-webkit-scrollbar,
         .right-panel::-webkit-scrollbar {
             width: 6px;
-        }
-
-        .orders-list::-webkit-scrollbar-track,
-        .right-panel::-webkit-scrollbar-track {
-            background: #f0f0f0;
         }
 
         .orders-list::-webkit-scrollbar-thumb,
@@ -401,397 +358,123 @@
             background: #ccc;
             border-radius: 3px;
         }
-
-        .orders-list::-webkit-scrollbar-thumb:hover,
-        .right-panel::-webkit-scrollbar-thumb:hover {
-            background: #999;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <h1>海苔訂單表單</h1>
             <p>三味屋 × 苔嗑 | 一帖咖啡</p>
         </div>
 
-        <!-- 左側 - 訂單列表 -->
         <div class="left-panel">
             <div class="left-header">訂單列表</div>
-            
             <div class="orders-list" id="ordersList">
                 <div class="empty-message">暫無訂單<br>提交後會顯示在這裡</div>
             </div>
-
             <div class="stats-section">
-                <div class="stat-row">
-                    <span>總訂單數：</span>
-                    <span class="stat-value" id="totalOrders">0</span>
-                </div>
-                <div class="stat-row">
-                    <span>總盒數：</span>
-                    <span class="stat-value" id="totalBoxes">0</span>
-                </div>
+                <div class="stat-row"><span>總訂單數：</span><span class="stat-value" id="totalOrders">0</span></div>
+                <div class="stat-row"><span>總件數：</span><span class="stat-value" id="totalBoxes">0</span></div>
                 <div class="stat-row" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e8e8e8;">
-                    <span>品項數：</span>
-                    <span class="stat-value" id="totalItems">0</span>
+                    <span>品項數：</span><span class="stat-value" id="totalItems">0</span>
                 </div>
                 <button class="btn-export" onclick="exportToExcel()">導出 Excel</button>
             </div>
         </div>
 
-        <!-- 右側 - 表單 -->
         <div class="right-panel">
             <div class="form-content">
                 <form id="orderForm">
-                    <!-- 訂購者資訊 -->
                     <div>
                         <h2 class="section-title">訂購者</h2>
                         <div class="form-group">
                             <label for="customerName">姓名 *</label>
-                            <input type="text" id="customerName" name="customerName" required>
+                            <input type="text" id="customerName" required>
                         </div>
                     </div>
 
-                    <!-- 訂購品項 -->
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">組合商品</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">甜雅自由配任選6包</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="甜雅自由配任選6包" min="0" value="0">
-                                    <span>組</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">三味屋系列 - 日式海苔</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">三味屋｜日式海苔-柚香口味(水果系) 32G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜日式海苔-柚香口味(水果系) 32G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">三味屋｜日式醬香海苔-原味 32G（雙潔淨標章）</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜日式醬香海苔-原味 32G（雙潔淨標章）" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">三味屋｜日式醬香海苔-辣味 32G（雙潔淨標章）</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜日式醬香海苔-辣味 32G（雙潔淨標章）" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">三味屋｜日式海苔-柚香口味(水果系) 32G/20入/箱 (含運)</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜日式海苔-柚香口味(水果系) 32G/20入/箱 (含運)" min="0" value="0"><span>箱</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">雅系列 18G</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">日式醬香海苔 18G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="日式醬香海苔 18G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">日式梅子海苔 18G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="日式梅子海苔 18G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">黃金效期-日式柑香海苔 18G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="黃金效期-日式柑香海苔 18G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">雅系列 - 18G</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">雅系列｜日式醬香海苔 18G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="雅系列｜日式醬香海苔 18G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">雅系列｜日式梅子海苔 18G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="雅系列｜日式梅子海苔 18G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">黃金效期｜雅系列｜日式柚香海苔 18G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="黃金效期｜雅系列｜日式柚香海苔 18G" min="0" value="0"><span>盒</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">雅系列 32G</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">日式柑香-柚香口味 32G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="日式柑香-柚香口味 32G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">日式醬香海苔-原味 32G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="日式醬香海苔-原味 32G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">日式醬香海苔-辣味 32G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="日式醬香海苔-辣味 32G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">苔嗑系列 - 36G</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">苔嗑｜香酥海苔-醬燒風味 36G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="苔嗑｜香酥海苔-醬燒風味 36G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">苔嗑｜香酥海苔-唐辛子風味 36G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="苔嗑｜香酥海苔-唐辛子風味 36G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">苔嗑｜脆海苔-胡椒鹽風味 36G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="苔嗑｜脆海苔-胡椒鹽風味 36G" min="0" value="0"><span>盒</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">三味屋系列 - 手握梅子海苔</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">韓式手握梅子海苔 40G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="韓式手握梅子海苔 40G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">韓式手握梅子海苔 40G/20包</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="韓式手握梅子海苔 40G/20包" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">KITTY系列 - 36G</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">KITTY聯名系列｜厚切海苔-椒鹽 36G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="KITTY聯名系列｜厚切海苔-椒鹽 36G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">KITTY聯名系列｜香酥海苔-醬燒 36G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="KITTY聯名系列｜香酥海苔-醬燒 36G" min="0" value="0"><span>盒</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">三味屋系列 - 麻油海苔 30G</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">韓式麻油海苔-原味 30G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="韓式麻油海苔-原味 30G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">韓式麻油海苔-辣味 30G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="韓式麻油海苔-辣味 30G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">苔嗑系列 - 45G 箱裝 (含運)</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">苔嗑｜香酥海苔-醬燒口味45G/20入/箱 (含運)</div><div class="quantity-control"><input type="number" class="product-qty" data-product="苔嗑｜香酥海苔-醬燒口味45G/20入/箱 (含運)" min="0" value="0"><span>箱</span></div></div>
+                        <div class="product-item"><div class="product-name">苔嗑｜厚切海苔-椒鹽口味45G/20入/箱 (含運)</div><div class="quantity-control"><input type="number" class="product-qty" data-product="苔嗑｜厚切海苔-椒鹽口味45G/20入/箱 (含運)" min="0" value="0"><span>箱</span></div></div>
+                        <div class="product-item"><div class="product-name">苔嗑｜厚切海苔-梅子口味 45G/20包/箱 (含運)</div><div class="quantity-control"><input type="number" class="product-qty" data-product="苔嗑｜厚切海苔-梅子口味 45G/20包/箱 (含運)" min="0" value="0"><span>箱</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">三味屋系列 - 純橄欖油海苔</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">100%純橄欖油海苔 50G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="100%純橄欖油海苔 50G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">100%純橄欖油海苔 12入/箱</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="100%純橄欖油海苔 12入/箱" min="0" value="0">
-                                    <span>箱</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">100%純橄欖油海苔禮盒</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="100%純橄欖油海苔禮盒" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">苔嗑系列 - 45G 單入</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">苔嗑｜香酥海苔-醬燒風味 45G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="苔嗑｜香酥海苔-醬燒風味 45G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">苔嗑｜香酥海苔-芥末醬燒 45G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="苔嗑｜香酥海苔-芥末醬燒 45G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">苔嗑｜厚切海苔-椒鹽口味 45G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="苔嗑｜厚切海苔-椒鹽口味 45G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">苔嗑｜厚切海苔-川麻風味 45G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="苔嗑｜厚切海苔-川麻風味 45G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">苔嗑｜厚切海苔-梅子口味 45G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="苔嗑｜厚切海苔-梅子口味 45G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">苔嗑｜脆海苔-胡椒口味 45G (雙潔淨標章)</div><div class="quantity-control"><input type="number" class="product-qty" data-product="苔嗑｜脆海苔-胡椒口味 45G (雙潔淨標章)" min="0" value="0"><span>盒</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">三味屋系列 - 岩燒海苔 50G</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">韓式岩燒海苔-原味 50G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="韓式岩燒海苔-原味 50G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">韓式岩燒海苔-辣味 50G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="韓式岩燒海苔-辣味 50G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">三味屋系列 - 手釀梅子海苔</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">三味屋｜韓式手釀梅子海苔 40G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜韓式手釀梅子海苔 40G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">三味屋｜韓式手釀梅子海苔 40G/20包/箱</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜韓式手釀梅子海苔 40G/20包/箱" min="0" value="0"><span>箱</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">三味屋系列 - 其他</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">海苔杏仁薄烤 40G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="海苔杏仁薄烤 40G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">韓式岩燒海苔 4個入 (12GX4包)</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="韓式岩燒海苔 4個入 (12GX4包)" min="0" value="0">
-                                    <span>組</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">三味屋系列 - 麻油海苔 30G</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">三味屋｜韓式麻油海苔-原味 30G (雙潔淨標章)</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜韓式麻油海苔-原味 30G (雙潔淨標章)" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">三味屋｜韓式麻油海苔-辣味 30G (雙潔淨標章)</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜韓式麻油海苔-辣味 30G (雙潔淨標章)" min="0" value="0"><span>盒</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">苔嗑系列 - 香酥海苔 36G</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">香酥海苔-醬燒風味 36G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="香酥海苔-醬燒風味 36G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">香酥海苔-唐辛子風味 36G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="香酥海苔-唐辛子風味 36G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">脆海苔-胡椒蘑菇風味 36G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="脆海苔-胡椒蘑菇風味 36G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">三味屋系列 - 純橄欖油海苔</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">三味屋｜100%純橄欖油海苔酥 50G（雙潔淨標章認證）</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜100%純橄欖油海苔酥 50G（雙潔淨標章認證）" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">三味屋｜100%純橄欖油海苔12入/箱</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜100%純橄欖油海苔12入/箱" min="0" value="0"><span>箱</span></div></div>
+                        <div class="product-item"><div class="product-name">三味屋｜100%純橄欖油海苔禮盒</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜100%純橄欖油海苔禮盒" min="0" value="0"><span>盒</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">苔嗑系列 - 香酥海苔 45G</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">香酥海苔-醬燒口味 45G/20入</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="香酥海苔-醬燒口味 45G/20入" min="0" value="0">
-                                    <span>箱</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">香酥海苔-醬燒風味 45G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="香酥海苔-醬燒風味 45G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">香酥海苔-芥末燒 45G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="香酥海苔-芥末燒 45G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">三味屋系列 - 岩燒海苔酥 50G</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">三味屋｜韓式岩燒海苔酥-原味 50G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜韓式岩燒海苔酥-原味 50G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">三味屋｜韓式岩燒海苔酥-辣味 50G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜韓式岩燒海苔酥-辣味 50G" min="0" value="0"><span>盒</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">苔嗑系列 - 厚切海苔 45G</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">厚切海苔-撲鹽風味 45G/20入</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="厚切海苔-撲鹽風味 45G/20入" min="0" value="0">
-                                    <span>箱</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">厚切海苔-梅子口味 45G/20包</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="厚切海苔-梅子口味 45G/20包" min="0" value="0">
-                                    <span>箱</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">厚切海苔-椒鹽風味 45G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="厚切海苔-椒鹽風味 45G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">三味屋系列 - 其他</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">三味屋｜海苔杏仁薄燒 40G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜海苔杏仁薄燒 40G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">三味屋｜韓式岩燒海苔大四入 (12GX4包/袋)</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜韓式岩燒海苔大四入 (12GX4包/袋)" min="0" value="0"><span>組</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">嗑海苔系列 - 全形燒海苔</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">全形燒海苔(無調味) 10枚</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="全形燒海苔(無調味) 10枚" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">全形燒海苔(無調味) 50枚</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="全形燒海苔(無調味) 50枚" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">全形燒海苔「對切」100枚</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="全形燒海苔「對切」100枚" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">全形燒海苔「四切」200枚</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="全形燒海苔「四切」200枚" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">三味屋系列 - 全形燒海苔</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">三味屋｜全形燒海苔(無調味)10枚</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜全形燒海苔(無調味)10枚" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">三味屋｜全形燒海苔50枚(無調味)</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜全形燒海苔50枚(無調味)" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">三味屋｜全形燒海苔「對切」100枚 (無調味)</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜全形燒海苔「對切」100枚 (無調味)" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">三味屋｜全形燒海苔「四切」200枚 (無調味)</div><div class="quantity-control"><input type="number" class="product-qty" data-product="三味屋｜全形燒海苔「四切」200枚 (無調味)" min="0" value="0"><span>盒</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">嗑海苔系列 - 厚烤海苔 70G</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">厚烤海苔-撲鹽風味 70G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="厚烤海苔-撲鹽風味 70G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">厚烤海苔-香辣風味 70G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="厚烤海苔-香辣風味 70G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">厚烤海苔-素蝦香風味 70G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="厚烤海苔-素蝦香風味 70G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">嗑海苔系列 - 70G</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">嗑海苔｜厚烤海苔-椒鹽風味 70G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="嗑海苔｜厚烤海苔-椒鹽風味 70G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">嗑海苔｜香脆海苔-醬燒風味 70G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="嗑海苔｜香脆海苔-醬燒風味 70G" min="0" value="0"><span>盒</span></div></div>
+                        <div class="product-item"><div class="product-name">即期特價20260425｜嗑海苔｜厚烤海苔-素魷魚風味 70G</div><div class="quantity-control"><input type="number" class="product-qty" data-product="即期特價20260425｜嗑海苔｜厚烤海苔-素魷魚風味 70G" min="0" value="0"><span>盒</span></div></div>
+                    </div></div>
 
-                    <div style="margin-top: 30px;">
-                        <h2 class="section-title">KITTY系列</h2>
-                        <div class="product-grid">
-                            <div class="product-item">
-                                <div class="product-name">KITTY聯名系列-厚切海苔-椒鹽 36G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="KITTY聯名系列-厚切海苔-椒鹽 36G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="product-name">KITTY聯名系列-香酥海苔-醬燒 36G</div>
-                                <div class="quantity-control">
-                                    <input type="number" class="product-qty" data-product="KITTY聯名系列-香酥海苔-醬燒 36G" min="0" value="0">
-                                    <span>盒</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div style="margin-top: 30px;"><h2 class="section-title">組合商品</h2><div class="product-grid">
+                        <div class="product-item"><div class="product-name">甜雅自由配任選6包 $510</div><div class="quantity-control"><input type="number" class="product-qty" data-product="甜雅自由配任選6包 $510" min="0" value="0"><span>組</span></div></div>
+                    </div></div>
 
-                    <!-- 按鈕 -->
                     <div class="button-group">
                         <button type="reset" class="btn-reset">清空</button>
                         <button type="submit" class="btn-submit">提交訂單</button>
@@ -805,10 +488,8 @@
         const form = document.getElementById('orderForm');
         const ordersList = document.getElementById('ordersList');
         const productInputs = document.querySelectorAll('.product-qty');
-        
         let orders = [];
 
-        // 從 localStorage 載入訂單
         function loadOrders() {
             const saved = localStorage.getItem('seaweed_orders');
             if (saved) {
@@ -818,15 +499,12 @@
             }
         }
 
-        // 保存訂單到 localStorage
         function saveOrders() {
             localStorage.setItem('seaweed_orders', JSON.stringify(orders));
         }
 
-        // 表單提交
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-
             const customerName = document.getElementById('customerName').value;
             const hasItems = Array.from(productInputs).some(input => parseInt(input.value) > 0);
 
@@ -835,15 +513,11 @@
                 return;
             }
 
-            // 構建訂單
             const items = [];
             productInputs.forEach(input => {
                 const qty = parseInt(input.value) || 0;
                 if (qty > 0) {
-                    items.push({
-                        product: input.dataset.product,
-                        quantity: qty
-                    });
+                    items.push({product: input.dataset.product, quantity: qty});
                 }
             });
 
@@ -859,22 +533,19 @@
             saveOrders();
             renderOrders();
             updateStats();
-
-            // 重置表單
             form.reset();
             alert('✅ 訂單已提交！');
         });
 
-        // 渲染訂單列表
         function renderOrders() {
             if (orders.length === 0) {
                 ordersList.innerHTML = '<div class="empty-message">暫無訂單<br>提交後會顯示在這裡</div>';
                 return;
             }
 
-            ordersList.innerHTML = orders.map((order, index) => {
+            ordersList.innerHTML = orders.map((order) => {
                 const itemsHtml = order.items.map(item => 
-                    `<div>${item.product} × ${item.quantity} 盒</div>`
+                    `<div>${item.product} × ${item.quantity}</div>`
                 ).join('');
 
                 return `
@@ -892,7 +563,6 @@
             }).join('');
         }
 
-        // 刪除訂單
         function deleteOrder(id) {
             if (confirm('確認刪除此訂單？')) {
                 orders = orders.filter(order => order.id !== id);
@@ -902,14 +572,11 @@
             }
         }
 
-        // 更新統計
         function updateStats() {
             const totalOrders = orders.length;
             const totalBoxes = orders.reduce((sum, order) => 
                 sum + order.items.reduce((itemSum, item) => itemSum + item.quantity, 0), 0
             );
-
-            // 統計各品項
             const itemStats = {};
             orders.forEach(order => {
                 order.items.forEach(item => {
@@ -923,7 +590,6 @@
             document.getElementById('totalItems').textContent = totalItems;
         }
 
-        // 導出 Excel
         function exportToExcel() {
             if (orders.length === 0) {
                 alert('沒有訂單可導出');
@@ -931,14 +597,12 @@
             }
 
             let csvContent = '訂購者,品項,數量,訂單時間\n';
-
             orders.forEach(order => {
                 order.items.forEach(item => {
                     csvContent += `"${order.name}","${item.product}",${item.quantity},"${order.time}"\n`;
                 });
             });
 
-            // 建立下載
             const link = document.createElement('a');
             link.href = 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(csvContent);
             link.download = `海苔訂單_${new Date().toLocaleDateString('zh-TW').replace(/\//g, '-')}.csv`;
@@ -947,7 +611,6 @@
             alert('✅ 訂單已導出為 CSV 檔案！');
         }
 
-        // 初始化
         loadOrders();
     </script>
 </body>
